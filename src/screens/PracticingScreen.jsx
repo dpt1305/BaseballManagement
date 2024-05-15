@@ -1,10 +1,64 @@
 import React from 'react';
-import {View, Text, SafeAreaView, Button} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-const PracticingScreen = ({navigation}) => {
+import {SafeAreaView, Button, FlatList} from 'react-native';
+import PracticingComponent from '../component/PracticingComponent';
+
+export default function PracticingScreen({navigation}) {
+  const mockData = [
+    {
+      id: '1',
+      practiceName: 'The first basic practice',
+      practiceTime: '13/05/2024',
+      numberPracticer: '20/30',
+    },
+    {
+      id: '2',
+      practiceName: 'The first basic practice',
+      practiceTime: '13/05/2024',
+      numberPracticer: '20/30',
+    },
+    {
+      id: '3',
+      practiceName: 'The first basic practice',
+      practiceTime: '13/05/2024',
+      numberPracticer: '20/30',
+    },
+    {
+      id: '4',
+      practiceName: 'The first basic practice',
+      practiceTime: '13/05/2024',
+      numberPracticer: '20/30',
+    },
+    {
+      id: '5',
+      practiceName: 'The first basic practice',
+      practiceTime: '13/05/2024',
+      numberPracticer: '20/30',
+    },
+    {
+      id: '6',
+      practiceName: 'The first basic practice',
+      practiceTime: '13/05/2024',
+      numberPracticer: '20/30',
+    },
+  ];
+  const rederItem = ({item}) => {
+    console.log(item.practiceName);
+    return (
+      <PracticingComponent
+        navigation={navigation}
+        practiceName={item.practiceName}
+        practiceTime={item.practiceTime}
+        numberPracticer={item.numberPracticer}
+      />
+    );
+  };
   return (
     <SafeAreaView>
-      <Text> HOME</Text>
+      <FlatList
+        data={mockData}
+        keyExtractor={item => item.id}
+        renderItem={rederItem}
+      />
       <Button
         title="Press me"
         onPress={() => {
@@ -13,6 +67,4 @@ const PracticingScreen = ({navigation}) => {
       />
     </SafeAreaView>
   );
-};
-
-export default PracticingScreen;
+}
