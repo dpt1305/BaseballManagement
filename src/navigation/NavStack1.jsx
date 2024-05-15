@@ -11,6 +11,8 @@ import AttendanceScreen from '../screens/AttendanceScreen';
 import {Button} from 'react-native-paper';
 import 'react-native-vector-icons';
 import AddPracticingScreen from '../screens/AddPracticingScreen';
+import ScreenConst from '../const/ScreenConst';
+import MemberScreen from '../screens/MemberScreen';
 // import 'react-native-gesture-handler';
 
 export default function NavStack1() {
@@ -51,10 +53,27 @@ export default function NavStack1() {
         }}
       />
       <Stack.Screen
-        name="AddPracticingScreen"
+        name={ScreenConst.ADD_PRACTICING_SCREEN}
         component={AddPracticingScreen}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenConst.ATTENDANCE_SCREEN}
+        component={AttendanceScreen}
+        options={{
+          headerRight: () => {
+            return (
+              <Button
+                icon="content-save-outline"
+                onPress={() => {}}
+                // icon={require('../assets/icons8-save-50.png')}
+              >
+                Save
+              </Button>
+            );
+          },
         }}
       />
     </Stack.Navigator>

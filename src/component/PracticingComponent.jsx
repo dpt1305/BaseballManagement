@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ColorConst from '../const/ColorConst';
+import ScreenConst from '../const/ScreenConst';
 
 const mockData = {
   practiceName: 'The first basic practice',
@@ -14,10 +15,12 @@ export default function PracticingComponent({
   practiceTime,
   numberPracticer,
 }) {
-  const componentOnPress = () => {};
+  const componentOnPress = () => {
+    navigation.navigate(ScreenConst.ATTENDANCE_SCREEN);
+  };
 
   return (
-    <TouchableOpacity onPress={() => componentOnPress}>
+    <TouchableOpacity onPress={componentOnPress}>
       <View style={styles.containerView}>
         <View style={styles.onTopView}>
           <Text style={styles.topTitle}>{practiceName}</Text>
