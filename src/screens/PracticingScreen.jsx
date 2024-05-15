@@ -42,7 +42,6 @@ export default function PracticingScreen({navigation}) {
     },
   ];
   const rederItem = ({item}) => {
-    console.log(item.practiceName);
     return (
       <PracticingComponent
         navigation={navigation}
