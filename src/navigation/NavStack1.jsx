@@ -10,6 +10,7 @@ import React from 'react';
 import AttendanceScreen from '../screens/AttendanceScreen';
 import {Button} from 'react-native-paper';
 import 'react-native-vector-icons';
+import AddPracticingScreen from '../screens/AddPracticingScreen';
 // import 'react-native-gesture-handler';
 
 export default function NavStack1() {
@@ -43,15 +44,15 @@ export default function NavStack1() {
             return (
               <Button
                 icon="plus-circle-outline"
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+                onPress={() => navigation.navigate('AddPracticingScreen')}
               />
             );
           },
         }}
       />
       <Stack.Screen
-        name="Attendance"
-        component={AttendanceScreen}
+        name="AddPracticingScreen"
+        component={AddPracticingScreen}
         options={{
           headerShown: false,
         }}
