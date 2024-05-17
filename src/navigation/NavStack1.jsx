@@ -21,7 +21,7 @@ export default function NavStack1() {
   return (
     // <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="HOME"
+      initialRouteName={ScreenConst.PRACTICING_SCREEN}
       screenOptions={{
         statusBarColor: '#0163d2',
         headerStyle: {
@@ -31,7 +31,7 @@ export default function NavStack1() {
         headerTitleAlign: 'center',
       }}>
       <Stack.Screen
-        name="HOME"
+        name={ScreenConst.PRACTICING_SCREEN}
         component={PracticingScreen}
         options={{
           headerLeft: () => {
@@ -46,7 +46,9 @@ export default function NavStack1() {
             return (
               <Button
                 icon="plus-circle-outline"
-                onPress={() => navigation.navigate('AddPracticingScreen')}
+                onPress={() =>
+                  navigation.navigate(ScreenConst.ADD_PRACTICING_SCREEN)
+                }
               />
             );
           },
