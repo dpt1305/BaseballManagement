@@ -56,7 +56,17 @@ export default function NavStack1() {
         name={ScreenConst.ADD_PRACTICING_SCREEN}
         component={AddPracticingScreen}
         options={{
-          headerShown: false,
+          headerRight: () => {
+            return (
+              <Button
+                icon="plus-circle-outline"
+                onPress={() => {}}
+                // icon={require('../assets/icons8-save-50.png')}
+              >
+                Add
+              </Button>
+            );
+          },
         }}
       />
       <Stack.Screen
