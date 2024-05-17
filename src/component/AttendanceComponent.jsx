@@ -9,9 +9,14 @@ const mockData = {
   isChecked: false,
 };
 
-export default function AttendanceComponent(props) {
+export default function AttendanceComponent({
+  navigation,
+  item,
+  checkedIdArray,
+  setCheckedIdArray,
+}) {
   const [isCheckedState, setIsCheckState] = useState(
-    mockData.isChecked === true ? true : false,
+    checkedIdArray.includes(item.id),
   );
 
   const renderCheckbox = () => {
@@ -21,7 +26,15 @@ export default function AttendanceComponent(props) {
       return <Icon name="checkbox-blank-outline" size={30} />;
     }
   };
-  const onClick = () => setIsCheckState(!isCheckedState);
+  const onClick = () => {
+    if (isCheckedState) {
+      const updateCheckedIdArray = checkedIdArray.filter(e => e !== item.id);
+      setCheckedIdArray(updateCheckedIdArray);
+    } else {
+      checkedIdArray.push(item.id);
+    }
+    setIsCheckState(!isCheckedState);
+  };
 
   return (
     <TouchableOpacity onPress={onClick}>
@@ -31,10 +44,10 @@ export default function AttendanceComponent(props) {
             ? styles.checkedContainerView
             : styles.containerView
         }>
-        <View style={styles.checkBoxView}>{renderCheckbox(mockData)}</View>
+        <View style={styles.checkBoxView}>{renderCheckbox()}</View>
 
         <View style={styles.textView}>
-          <Text>{mockData.name}</Text>
+          <Text style={styles.text}>{item.name}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -44,22 +57,24 @@ export default function AttendanceComponent(props) {
 const styles = StyleSheet.create({
   containerView: {
     flexDirection: 'row',
-    height: 50,
-    width: 390,
+    height: 60,
+    width: 370,
     borderRadius: 15,
     padding: 10,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: 'gray',
+    margin: 10,
   },
   checkedContainerView: {
     flexDirection: 'row',
-    height: 50,
-    width: 390,
+    height: 60,
+    width: 370,
     borderRadius: 15,
     padding: 10,
-    backgroundColor: ColorConst.primaryColor,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: 'gray',
+    margin: 10,
+    backgroundColor: ColorConst.primaryColor,
   },
   checkBoxView: {
     flex: 1,
@@ -69,5 +84,9 @@ const styles = StyleSheet.create({
   textView: {
     flex: 9,
     justifyContent: 'center',
+  },
+  text: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });

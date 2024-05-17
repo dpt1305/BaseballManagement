@@ -58,12 +58,6 @@ export default function PracticingScreen({navigation}) {
         keyExtractor={item => item.id}
         renderItem={rederItem}
       />
-      <Button
-        title="Press me"
-        onPress={() => {
-          navigation.push('Attendance');
-        }}
-      />
     </SafeAreaView>
   );
 }
