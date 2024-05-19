@@ -4,6 +4,7 @@ const ColorConst = {
   thirdColor: '#FB2222',
   white: '#FFFFF',
   spaceGray: '#E8E8E8',
+  customedRed: 'rgba(251,34,34,0.76)',
 };
 
 export default ColorConst;

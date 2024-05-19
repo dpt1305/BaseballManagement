@@ -65,7 +65,6 @@ export default function AttendanceScreen({navigation}) {
     .map(e => e.id);
 
   const [checkedIdArray, setCheckedIdArray] = useState(rawCheckedIdArray);
-  console.log(checkedIdArray);
   const renderItem = ({item}) => {
     return (
       <AttendanceComponent
