@@ -1,52 +1,48 @@
 import React from 'react';
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
-import {
-  Menu,
-  MenuOption,
-  MenuOptions,
-  MenuProvider,
-  MenuTrigger,
-} from 'react-native-popup-menu';
+
 import ColorConst from '../const/ColorConst';
 
 export default function MemberComponent(props) {
   const toggleMenu = () => {
-    props.setIsVisible(!props.isVisible);
+    if (props.clickedRow == null) {
+      props.setClickedRow(props.item.id);
+    } else {
+      props.setClickedRow(null);
+    }
   };
 
   return (
-    <View style={styles.containerView}>
+    <View
+      style={
+        props.clickedRow !== props.item.id
+          ? styles.containerView
+          : styles.containerViewMargin
+      }>
       <View style={styles.textView}>
         <Text>{props.item.name}</Text>
       </View>
       <View style={styles.buttonView}>
         <Button icon="dots-horizontal" onPress={toggleMenu} />
-        <Modal visible={props.isVisible} transparent={true}>
-          <TouchableWithoutFeedback onPress={toggleMenu}>
-            <View style={styles.modalView}>
-              <View style={styles.menuView}>
-                <View style={styles.detailView}>
-                  <Button onPress={() => {}}>Chi tiet</Button>
-                </View>
-                <View style={styles.deleteView}>
-                  <Button
-                    onPress={() => {
-                      props.setIsDeleteModalVisible(true);
-                    }}>
-                    Xoá
-                  </Button>
-                </View>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
+        <View
+          style={
+            props.clickedRow !== props.item.id
+              ? styles.menuDisableView
+              : styles.menuView
+          }>
+          <View style={styles.detailView}>
+            <Button onPress={() => {}}>Chi tiếtt</Button>
+          </View>
+          <View style={styles.deleteView}>
+            <Button
+              onPress={() => {
+                props.setIsDeleteModalVisible(true);
+              }}>
+              Xoá
+            </Button>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -61,29 +57,52 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'gray',
     margin: 10,
-    position: 'relative',
+  },
+  containerViewMargin: {
+    flexDirection: 'row',
+    height: 50,
+    width: 370,
+    borderRadius: 15,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: 'gray',
+    margin: 10,
+    marginBottom: 50,
   },
   textView: {
     flex: 9,
     justifyContent: 'center',
     color: 'black',
+    position: 'relative',
   },
   buttonView: {
     flex: 3,
     justifyContent: 'center',
-    // position: 'relative',
+    position: 'relative',
   },
-  modalView: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(255, 254, 255, 0)',
+  // modalView: {
+  //   // width: '100%',
+  //   // height: '100%',
+  //   backgroundColor: 'rgba(255, 254, 255, 0)',
+  //   position: 'absolute',
+  //   display: 'none',
+  // },
+  // modalDisableView: {
+  //   // width: '100%',
+  //   // height: '100%',
+  //   backgroundColor: 'rgba(255, 254, 255, 0)',
+  //   position: 'absolute',
+  //   display: 'none',
+  // },
+  menuDisableView: {
+    display: 'none',
   },
   menuView: {
     position: 'absolute',
-    right: 45,
-    top: 80,
+    top: -5,
+    right: 30,
     width: 150,
-    maxHeight: 150,
+    maxHeight: 'auto',
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,

@@ -41,7 +41,7 @@ export default function PracticingScreen({navigation}) {
       numberPracticer: '20/30',
     },
   ];
-  const rederItem = ({item}) => {
+  const renderFunction = ({item}) => {
     return (
       <PracticingComponent
         navigation={navigation}
@@ -56,7 +56,7 @@ export default function PracticingScreen({navigation}) {
       <FlatList
         data={mockData}
         keyExtractor={item => item.id}
-        renderItem={rederItem}
+        renderItem={renderFunction}
       />
     </SafeAreaView>
   );

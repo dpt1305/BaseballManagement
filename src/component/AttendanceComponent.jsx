@@ -34,6 +34,7 @@ export default function AttendanceComponent({
       checkedIdArray.push(item.id);
     }
     setIsCheckState(!isCheckedState);
+    console.log(checkedIdArray);
   };
 
   return (
