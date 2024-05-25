@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Button} from 'react-native-paper';
 
 import ColorConst from '../const/ColorConst';
+import ScreenConst from '../const/ScreenConst';
 
 export default function MemberComponent(props) {
   const toggleMenu = () => {
@@ -12,18 +13,22 @@ export default function MemberComponent(props) {
       props.setClickedRow(null);
     }
   };
+  const showDeletePopup = () => {
+    props.setIsDeleteModalVisible(true);
+  };
+  const moveToMemberDetail = () => {
+    props.navigation.navigate(ScreenConst.MEMBER_DETAIL_SCREEN);
+  };
 
   return (
-    <View
-      style={
-        props.clickedRow !== props.item.id
-          ? styles.containerView
-          : styles.containerViewMargin
-      }>
+    <TouchableOpacity
+      onLongPress={showDeletePopup}
+      onPress={moveToMemberDetail}
+      style={styles.containerView}>
       <View style={styles.textView}>
-        <Text>{props.item.name}</Text>
+        <Text style={styles.text}>{props.item.name}</Text>
       </View>
-      <View style={styles.buttonView}>
+      {/* <View style={styles.buttonView}>
         <Button icon="dots-horizontal" onPress={toggleMenu} />
         <View
           style={
@@ -43,31 +48,21 @@ export default function MemberComponent(props) {
             </Button>
           </View>
         </View>
-      </View>
-    </View>
+      </View> */}
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
   containerView: {
     flexDirection: 'row',
-    height: 50,
+    height: 65,
     width: 370,
     borderRadius: 15,
     padding: 10,
     borderWidth: 2,
     borderColor: 'gray',
     margin: 10,
-  },
-  containerViewMargin: {
-    flexDirection: 'row',
-    height: 50,
-    width: 370,
-    borderRadius: 15,
-    padding: 10,
-    borderWidth: 2,
-    borderColor: 'gray',
-    margin: 10,
-    marginBottom: 50,
+    backgroundColor: 'white',
   },
   textView: {
     flex: 9,
@@ -75,6 +70,7 @@ const styles = StyleSheet.create({
     color: 'black',
     position: 'relative',
   },
+  text: {fontSize: 20},
   buttonView: {
     flex: 3,
     justifyContent: 'center',

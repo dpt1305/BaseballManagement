@@ -9,6 +9,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ScreenConst from '../const/ScreenConst';
 import MemberScreen from '../screens/MemberScreen';
 import {Button} from 'react-native-paper';
+import {MemeberDetailScreen} from '../screens/MemberDetailScreen';
 
 export default function NavStack2() {
   const Stack = createNativeStackNavigator();
@@ -48,6 +49,10 @@ export default function NavStack2() {
             );
           },
         }}
+      />
+      <Stack.Screen
+        name={ScreenConst.MEMBER_DETAIL_SCREEN}
+        component={MemeberDetailScreen}
       />
     </Stack.Navigator>
   );

@@ -12,7 +12,7 @@ import 'react-native-vector-icons';
 import {Button} from 'react-native-paper';
 import MemberComponent from '../component/MemberComponent';
 
-const MemberScreen = () => {
+const MemberScreen = ({navigation}) => {
   const mockItem = {
     name: 'Nguyen Van A',
     position: ['SS', 'PA'],
@@ -104,6 +104,7 @@ const MemberScreen = () => {
         renderItem={({item}) => {
           return (
             <MemberComponent
+              navigation={navigation}
               item={item}
               isVisible={isVisible}
               setIsVisible={setIsVisible}
