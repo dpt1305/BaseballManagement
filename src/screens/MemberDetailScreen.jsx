@@ -46,7 +46,6 @@ export function MemeberDetailScreen() {
   );
 
   const onChangeEditable = () => {
-    console.log(positionNames);
     setIsEditable(!isEditable);
   };
 
@@ -132,6 +131,7 @@ export function MemeberDetailScreen() {
               selection={{start: user.nickName.toString().length}}
               editable={isEditable}
               value={user.nickName}
+              onChangeText={newText => handleInputChange('nickName', newText)}
             />
           </View>
         </View>
@@ -156,6 +156,9 @@ export function MemeberDetailScreen() {
               selection={{start: user.phoneNumber.toString().length}}
               editable={isEditable}
               value={user.phoneNumber}
+              onChangeText={newText =>
+                handleInputChange('phoneNumber', newText)
+              }
             />
           </View>
         </View>
@@ -177,6 +180,9 @@ export function MemeberDetailScreen() {
               selection={{start: user.dateOfBirth.toString().length}}
               editable={isEditable}
               value={user.dateOfBirth}
+              onChangeText={newText =>
+                handleInputChange('dateOfBirth', newText)
+              }
             />
           </View>
         </View>
@@ -198,6 +204,9 @@ export function MemeberDetailScreen() {
               selection={{start: user.jerseyNumber.toString().length}}
               editable={isEditable}
               value={user.jerseyNumber.toString()}
+              onChangeText={newText =>
+                handleInputChange('jerseyNumber', newText)
+              }
             />
           </View>
         </View>
@@ -219,6 +228,7 @@ export function MemeberDetailScreen() {
               selection={{start: user.jerseySize.toString().length}}
               editable={isEditable}
               value={user.jerseySize}
+              onChangeText={newText => handleInputChange('jerseySize', newText)}
             />
           </View>
         </View>
@@ -240,6 +250,9 @@ export function MemeberDetailScreen() {
               selection={{start: user.memberStatus.toString().length}}
               editable={isEditable}
               value={user.memberStatus}
+              onChangeText={newText =>
+                handleInputChange('memberStatus', newText)
+              }
             />
           </View>
         </View>
