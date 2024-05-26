@@ -1,6 +1,7 @@
 import React from 'react';
-import {SafeAreaView, Button, FlatList} from 'react-native';
+import {SafeAreaView, Button, FlatList, Modal, View} from 'react-native';
 import PracticingComponent from '../component/PracticingComponent';
+import {ActivityIndicator, MD2Colors} from 'react-native-paper';
 
 export default function PracticingScreen({navigation}) {
   const mockData = [
@@ -51,8 +52,25 @@ export default function PracticingScreen({navigation}) {
       />
     );
   };
+  const [isLoading, setIsLoading] = React.useState(false);
   return (
     <SafeAreaView>
+      <Modal transparent={true} visible={isLoading}>
+        <View
+          style={{
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            width: '50%',
+            height: '50%',
+            margin: 'auto',
+          }}>
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            size={'large'}
+          />
+        </View>
+      </Modal>
+
       <FlatList
         data={mockData}
         keyExtractor={item => item.id}
