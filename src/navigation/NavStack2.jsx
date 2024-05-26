@@ -10,6 +10,7 @@ import ScreenConst from '../const/ScreenConst';
 import MemberScreen from '../screens/MemberScreen';
 import {Button} from 'react-native-paper';
 import {MemeberDetailScreen} from '../screens/MemberDetailScreen';
+import AddMemberScreen from '../screens/AddMemberScreen';
 
 export default function NavStack2() {
   const Stack = createNativeStackNavigator();
@@ -42,8 +43,9 @@ export default function NavStack2() {
             return (
               <Button
                 icon="plus-circle-outline"
-                // onPress={() => navigation.navigate('AddPracticingScreen')}
-              >
+                onPress={() =>
+                  navigation.navigate(ScreenConst.ADD_MEMBER_SCREEN)
+                }>
                 Add
               </Button>
             );
@@ -53,6 +55,10 @@ export default function NavStack2() {
       <Stack.Screen
         name={ScreenConst.MEMBER_DETAIL_SCREEN}
         component={MemeberDetailScreen}
+      />
+      <Stack.Screen
+        name={ScreenConst.ADD_MEMBER_SCREEN}
+        component={AddMemberScreen}
       />
     </Stack.Navigator>
   );
