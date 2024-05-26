@@ -5,9 +5,7 @@ import {
   Text,
   TextInput,
   View,
-  Dimensions,
   ScrollView,
-  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import {Button} from 'react-native-paper';
@@ -28,7 +26,7 @@ export function MemeberDetailScreen() {
     memberStatus: 'Active',
     memberPositionSet: [
       {positionID: 2, positionName: 'P'},
-      // {id: 2, position: '1P'},
+      {positionID: 4, positionName: '1B'},
     ],
   };
   const [positionNames, setPositionNames] = useState('');
