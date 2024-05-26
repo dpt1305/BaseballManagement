@@ -52,24 +52,11 @@ export default function AddMemberScreen({navigation}) {
         </View>
         {/* view bottom */}
         <View style={styles.bottomView}>
-          {isEditable === true ? (
-            <TouchableOpacity
-              style={{padding: 5}}
-              onPress={() => setIsModalVisible(true)}>
-              <Text>{positionNames}</Text>
-            </TouchableOpacity>
-          ) : (
-            <TextInput
-              style={
-                isEditable === true
-                  ? styles.editableInputText
-                  : styles.inputText
-              }
-              placeholder="Vị trí"
-              editable={isEditable}
-              value={positionNames}
-            />
-          )}
+          <TouchableOpacity
+            style={{padding: 5}}
+            onPress={() => setIsModalVisible(true)}>
+            <Text>{positionNames}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
