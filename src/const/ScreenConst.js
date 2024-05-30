@@ -1,5 +1,5 @@
 const ScreenConst = {
-  PRACTICING_SCREEN: 'PracticingScreen',
+  PRACTICING_SCREEN: 'Buổi tập',
   ATTENDANCE_SCREEN: 'AttendanceScreen',
   MEMBER_SCREEN: 'MemberScreen',
   ADD_PRACTICING_SCREEN: 'AddPracticingScreen',

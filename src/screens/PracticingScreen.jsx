@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {SafeAreaView, Button, FlatList, Modal, View} from 'react-native';
+import {
+  SafeAreaView,
+  Button,
+  FlatList,
+  Modal,
+  View,
+  StyleSheet,
+} from 'react-native';
 import PracticingComponent from '../component/PracticingComponent';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
 import axios from 'axios';
@@ -80,13 +87,7 @@ export default function PracticingScreen({navigation}) {
   return (
     <SafeAreaView>
       <Modal transparent={true} visible={isLoading}>
-        <View
-          style={{
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            width: '50%',
-            height: '50%',
-            margin: 'auto',
-          }}>
+        <View style={styles.indicatorView}>
           <ActivityIndicator
             animating={true}
             color={MD2Colors.red800}
@@ -103,3 +104,11 @@ export default function PracticingScreen({navigation}) {
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  indicatorView: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '50%',
+    height: '50%',
+    margin: 'auto',
+  },
+});
