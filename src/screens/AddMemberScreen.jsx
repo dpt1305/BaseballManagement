@@ -10,34 +10,56 @@ import {
 } from 'react-native';
 import PositionModal from '../component/PositionModal';
 import ColorConst from '../const/ColorConst';
-import {Button} from 'react-native-paper';
+import {ActivityIndicator, Button, MD2Colors, Modal} from 'react-native-paper';
+import RequestConst from '../const/RequestConst';
+import axios from 'axios';
+import ScreenConst from '../const/ScreenConst';
 
 export default function AddMemberScreen({navigation}) {
-  const mockData = {
-    memberID: 0,
-    memberName: '',
-    phoneNumber: '',
-    dateOfBirth: '',
-    jerseyNumber: '',
-    jerseySize: '',
-    nickName: '',
-    handedness: '',
-    memberStatus: '',
-    memberPositionSet: [
-      // {positionID: 2, positionName: 'P'},
-      // {positionID: 4, positionName: '1B'},
-    ],
-  };
   const [positionNames, setPositionNames] = React.useState('');
   const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [isEditable, setIsEditable] = React.useState(true);
   const [user, setUser] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
 
   // const positionIds = mockData.memberPositionSet.map(e => e.positionID);
   const [selectedPositionIds, setSelectedPositionIds] = React.useState([]);
 
-  const onChangeEditable = () => {
-    setIsEditable(!isEditable);
+  const onSaveButton = () => {
+    setIsLoading(true);
+    // update positions
+    const newPositions = {
+      positionIDSet: selectedPositionIds,
+    };
+
+    // update user info
+    const newUserInfo = {
+      memberName: user.memberName,
+      dateOfBirth: user.dateOfBirth,
+      phoneNumber: user.phoneNumber,
+      jerseyNumber: user.jerseyNumber,
+      nickName: user.nickName,
+      handedness: user.handedness,
+    };
+
+    // call api
+    axios
+      .post(`${RequestConst.baseURL}/api/v1/member/newMember`, newUserInfo)
+      .then(response =>
+        axios.put(
+          `${RequestConst.baseURL}/api/v1/member/setPositionOfMember?memberID=${response.data.memberID}`,
+          newPositions,
+        ),
+      )
+      .then(response => {
+        console.log('success');
+      })
+      .catch(error => {
+        console.log('fail');
+      })
+      .finally(() => {
+        setIsLoading(false);
+        navigation.navigate(ScreenConst.MEMBER_SCREEN);
+      });
   };
 
   const handleInputChange = (attributeName, newText) => {
@@ -63,6 +85,15 @@ export default function AddMemberScreen({navigation}) {
   };
   return (
     <SafeAreaView>
+      <Modal transparent={true} visible={isLoading}>
+        <View style={styles.indicatorView}>
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            size={'large'}
+          />
+        </View>
+      </Modal>
       <ScrollView>
         {/* containver view */}
         <View style={styles.containverView}>
@@ -162,46 +193,28 @@ export default function AddMemberScreen({navigation}) {
             />
           </View>
         </View>
+
         {/* containver view */}
         <View style={styles.containverView}>
           {/* view on top */}
           <View style={styles.topView}>
-            <Text style={styles.topText}>Cỡ áo</Text>
+            <Text style={styles.topText}>Tay thuận</Text>
           </View>
           {/* view bottom */}
           <View style={styles.bottomView}>
             <TextInput
               style={styles.inputText}
-              placeholder="Cỡ áo"
+              placeholder="Tay thuận"
               editable={true}
-              value={user.jerseySize}
-              onChangeText={newText => handleInputChange('jerseySize', newText)}
-            />
-          </View>
-        </View>
-        {/* containver view */}
-        <View style={styles.containverView}>
-          {/* view on top */}
-          <View style={styles.topView}>
-            <Text style={styles.topText}>Trạng thái</Text>
-          </View>
-          {/* view bottom */}
-          <View style={styles.bottomView}>
-            <TextInput
-              style={styles.inputText}
-              placeholder="Trạng thái"
-              editable={true}
-              value={user.memberStatus}
-              onChangeText={newText =>
-                handleInputChange('memberStatus', newText)
-              }
+              value={user.handedness}
+              onChangeText={newText => handleInputChange('handedness', newText)}
             />
           </View>
         </View>
 
         {/* ################ edit button ########### */}
         <View style={styles.saveButton}>
-          <Button icon="content-save" onPress={onChangeEditable}>
+          <Button icon="content-save" onPress={onSaveButton}>
             {'Lưu'}
           </Button>
         </View>
@@ -290,5 +303,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: 'black',
+  },
+  indicatorView: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '50%',
+    height: '50%',
+    margin: 'auto',
   },
 });
