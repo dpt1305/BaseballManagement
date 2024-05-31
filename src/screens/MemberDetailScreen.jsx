@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,30 +8,20 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {Button} from 'react-native-paper';
+import {ActivityIndicator, Button, MD2Colors, Modal} from 'react-native-paper';
 import 'react-native-vector-icons';
 import ColorConst from '../const/ColorConst';
 import PositionModal from '../component/PositionModal';
 import PositionsConst from '../const/PositionsConst';
-import {useFocusEffect} from '@react-navigation/native';
+import axios from 'axios';
+import RequestConst from '../const/RequestConst';
+import ScreenConst from '../const/ScreenConst';
 
 export function MemeberDetailScreen(props) {
-  const mockData = {
-    memberID: 1,
-    memberName: '',
-    phoneNumber: '',
-    dateOfBirth: '',
-    jerseyNumber: 0,
-    jerseySize: '',
-    nickName: '',
-    handedness: '',
-    memberStatus: '',
-    memberPositionSet: [{positionID: 0, positionName: ''}],
-  };
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [user, setUser] = useState(props.route.params);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [positionNames, setPositionNames] = useState(
     user.memberPositionSet.map(e => PositionsConst[e.positionID]).join(', '),
@@ -39,6 +29,46 @@ export function MemeberDetailScreen(props) {
   const [selectedPositionIds, setSelectedPositionIds] = useState(
     user.memberPositionSet.map(e => e.positionID),
   );
+
+  const onSaveButton = () => {
+    setIsLoading(true);
+    // update positions
+    const newPositions = {
+      positionIDSet: selectedPositionIds,
+    };
+    const updatePositionPromise = axios.put(
+      `${RequestConst.baseURL}/api/v1/member/setPositionOfMember?memberID=${user.memberID}`,
+      newPositions,
+    );
+
+    // update user info
+    const newUserInfo = {
+      memberName: user.memberName,
+      dateOfBirth: user.dateOfBirth,
+      phoneNumber: user.phoneNumber,
+      jerseyNumber: user.jerseyNumber,
+      nickName: user.nickName,
+      handedness: user.handedness,
+    };
+    const updateUserPromise = axios.put(
+      `${RequestConst.baseURL}/api/v1/member/updateMember?memberID=${user.memberID}`,
+      newUserInfo,
+    );
+
+    // call all in one
+    Promise.all([updateUserPromise, updatePositionPromise])
+      .then(() => {
+        console.log('success');
+        setIsLoading(false);
+        props.navigation.navigate(ScreenConst.MEMBER_SCREEN);
+      })
+      .catch(() => {
+        console.log('fail');
+      });
+
+    // change editable => false
+    setIsEditable(false);
+  };
 
   const onChangeEditable = () => {
     setIsEditable(!isEditable);
@@ -255,7 +285,7 @@ export function MemeberDetailScreen(props) {
         {/* ################ edit button ########### */}
         <View style={isEditable ? styles.saveButton : styles.editButton}>
           {isEditable === true ? (
-            <Button icon="content-save" onPress={onChangeEditable}>
+            <Button icon="content-save" onPress={onSaveButton}>
               {'Lưu'}
             </Button>
           ) : (
@@ -273,6 +303,15 @@ export function MemeberDetailScreen(props) {
         setPositionNames={setPositionNames}
         positionNames={positionNames}
       />
+      <Modal transparent={true} visible={isLoading}>
+        <View style={styles.indicatorView}>
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            size={'large'}
+          />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -349,5 +388,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: 'black',
+  },
+  indicatorView: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '50%',
+    height: '50%',
+    margin: 'auto',
   },
 });

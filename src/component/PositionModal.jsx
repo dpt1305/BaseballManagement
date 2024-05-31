@@ -90,11 +90,9 @@ export default function PositionModal(props) {
       .filter(e => props.selectedPositionIds.includes(e.positionID))
       .map(e => e.positionName)
       .join(', ');
-    console.log(newPositionNames);
 
     props.setPositionNames(newPositionNames);
     props.setIsModalVisible(false);
-    console.log(props.positionNames);
   };
   const renderItem = ({item}) => {
     const checkBoxStatus = props.selectedPositionIds.includes(item.positionID)
