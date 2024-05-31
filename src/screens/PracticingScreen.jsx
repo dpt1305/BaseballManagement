@@ -1,74 +1,33 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  Button,
-  FlatList,
-  Modal,
-  View,
-  StyleSheet,
-} from 'react-native';
+import React, {useCallback} from 'react';
+import {SafeAreaView, FlatList, Modal, View, StyleSheet} from 'react-native';
 import PracticingComponent from '../component/PracticingComponent';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
 import axios from 'axios';
 import RequestConst from '../const/RequestConst';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function PracticingScreen({navigation}) {
-  // const mockData = [
-  //   {
-  //     id: '1',
-  //     practiceName: 'The first basic practice',
-  //     practiceTime: '13/05/2024',
-  //     numberPracticer: '20/30',
-  //   },
-  //   {
-  //     id: '2',
-  //     practiceName: 'The first basic practice',
-  //     practiceTime: '13/05/2024',
-  //     numberPracticer: '20/30',
-  //   },
-  //   {
-  //     id: '3',
-  //     practiceName: 'The first basic practice',
-  //     practiceTime: '13/05/2024',
-  //     numberPracticer: '20/30',
-  //   },
-  //   {
-  //     id: '4',
-  //     practiceName: 'The first basic practice',
-  //     practiceTime: '13/05/2024',
-  //     numberPracticer: '20/30',
-  //   },
-  //   {
-  //     id: '5',
-  //     practiceName: 'The first basic practice',
-  //     practiceTime: '13/05/2024',
-  //     numberPracticer: '20/30',
-  //   },
-  //   {
-  //     id: '6',
-  //     practiceName: 'The first basic practice',
-  //     practiceTime: '13/05/2024',
-  //     numberPracticer: '20/30',
-  //   },
-  // ];
-
   const [isLoading, setIsLoading] = React.useState(true);
   const [mockData, setData] = React.useState(null);
 
-  React.useEffect(() => {
-    axios
-      .get(
-        `${RequestConst.baseURL}/api/v1/practice/getPracticeSessionBetweenTwoDate?date1=2024-01-01&date2=2025-01-01`,
-      )
-      .then(response => {
-        setData(response.data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error(error);
-        setIsLoading(false);
-      });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      axios
+        .get(
+          `${RequestConst.baseURL}/api/v1/practice/getPracticeSessionBetweenTwoDate?date1=2024-01-01&date2=2025-01-01`,
+        )
+        .then(response => {
+          setTimeout(() => {
+            setData(response.data);
+            setIsLoading(false);
+          }, 1000);
+        })
+        .catch(error => {
+          console.error(error);
+          setIsLoading(false);
+        });
+    }, []),
+  );
 
   const renderFunction = ({item}) => {
     const rawDate = `${item.practiceDate}`;
@@ -98,7 +57,7 @@ export default function PracticingScreen({navigation}) {
 
       <FlatList
         data={mockData}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, idx) => `${item.id}_${idx}`}
         renderItem={renderFunction}
       />
     </SafeAreaView>

@@ -1,18 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Button} from 'react-native-paper';
-
 import ColorConst from '../const/ColorConst';
 import ScreenConst from '../const/ScreenConst';
 
 export default function MemberComponent(props) {
-  const toggleMenu = () => {
-    if (props.clickedRow == null) {
-      props.setClickedRow(props.item.id);
-    } else {
-      props.setClickedRow(null);
-    }
-  };
   const showDeletePopup = () => {
     props.setIsDeleteModalVisible(true);
   };
@@ -28,27 +19,6 @@ export default function MemberComponent(props) {
       <View style={styles.textView}>
         <Text style={styles.text}>{props.item.name}</Text>
       </View>
-      {/* <View style={styles.buttonView}>
-        <Button icon="dots-horizontal" onPress={toggleMenu} />
-        <View
-          style={
-            props.clickedRow !== props.item.id
-              ? styles.menuDisableView
-              : styles.menuView
-          }>
-          <View style={styles.detailView}>
-            <Button onPress={() => {}}>Chi tiếtt</Button>
-          </View>
-          <View style={styles.deleteView}>
-            <Button
-              onPress={() => {
-                props.setIsDeleteModalVisible(true);
-              }}>
-              Xoá
-            </Button>
-          </View>
-        </View>
-      </View> */}
     </TouchableOpacity>
   );
 }
@@ -76,20 +46,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
   },
-  // modalView: {
-  //   // width: '100%',
-  //   // height: '100%',
-  //   backgroundColor: 'rgba(255, 254, 255, 0)',
-  //   position: 'absolute',
-  //   display: 'none',
-  // },
-  // modalDisableView: {
-  //   // width: '100%',
-  //   // height: '100%',
-  //   backgroundColor: 'rgba(255, 254, 255, 0)',
-  //   position: 'absolute',
-  //   display: 'none',
-  // },
   menuDisableView: {
     display: 'none',
   },
@@ -123,7 +79,5 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    // borderWidth: 1,
-    // borderColor: 'grey',
   },
 });

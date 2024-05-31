@@ -24,10 +24,6 @@ export default function NavStack1() {
       initialRouteName={ScreenConst.PRACTICING_SCREEN}
       screenOptions={{
         statusBarColor: '#0163d2',
-        headerStyle: {
-          // backgroundColor: '#0163d2',
-        },
-        // headerTintColor: '#fff',
         headerTitleAlign: 'center',
       }}>
       <Stack.Screen
@@ -57,19 +53,6 @@ export default function NavStack1() {
       <Stack.Screen
         name={ScreenConst.ADD_PRACTICING_SCREEN}
         component={AddPracticingScreen}
-        options={{
-          headerRight: () => {
-            return (
-              <Button
-                icon="plus-circle-outline"
-                onPress={() => {}}
-                // icon={require('../assets/icons8-save-50.png')}
-              >
-                Add
-              </Button>
-            );
-          },
-        }}
       />
       <Stack.Screen
         name={ScreenConst.ATTENDANCE_SCREEN}

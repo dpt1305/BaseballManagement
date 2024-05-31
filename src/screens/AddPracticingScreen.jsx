@@ -1,66 +1,95 @@
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
-  FlatList,
+  Modal,
   SafeAreaView,
   ScrollView,
-  SectionList,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
+import RequestConst from '../const/RequestConst';
+import {ActivityIndicator, Button, MD2Colors} from 'react-native-paper';
+import ScreenConst from '../const/ScreenConst';
+import 'react-native-vector-icons';
 
-export default function AddPracticingScreen() {
-  const rawDataFromDB = {
-    name: 'Nguyen van a',
-    mainPosition: ['SS', 'SA', 'PA'],
-  };
-  const mockData = [
-    {
-      title: 'Tên',
-      data: ['Nguyễn Văn A'],
-    },
-    {
-      title: 'Vị trí',
-      data: ['SS', 'SQ', 'PA'],
-    },
-  ];
-  const [name, setName] = useState('');
-  const [time, setTime] = useState('');
+export default function AddPracticingScreen({navigation}) {
+  const [data, setData] = useState({
+    practiceDate: '',
+    endTime: '',
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onChangeName = newName => {
-    setName(newName);
+  const onChange = (attributeName, newText) => {
+    setData({
+      ...data,
+      [attributeName]: newText,
+    });
   };
-  const onChangeTime = newTime => {
-    setTime(newTime);
+
+  const onSaveButton = () => {
+    setIsLoading(true);
+    axios
+      .post(`${RequestConst.baseURL}/api/v1/practice/newPracticeSession`, {
+        ...data,
+        content: 'content',
+        totalActive: 0,
+        totalAttend: 0,
+      })
+      .then(response => {
+        // setData(response.data);
+        setTimeout(() => {
+          setIsLoading(false);
+          navigation.navigate(ScreenConst.PRACTICING_SCREEN);
+        }, 1000);
+      })
+      .catch(error => {
+        console.error(error);
+        setIsLoading(false);
+        navigation.navigate(ScreenConst.PRACTICING_SCREEN);
+      });
   };
 
   return (
     <SafeAreaView>
+      <Modal visible={isLoading}>
+        <View style={styles.indicatorView}>
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            size={'large'}
+          />
+        </View>
+      </Modal>
+
       <ScrollView>
+        <Button icon="content-save" mode="outlined" onPress={onSaveButton}>
+          {'Lưu'}
+        </Button>
         {/* Container */}
         <View style={styles.container}>
           <View style={styles.titleView}>
-            <Text style={styles.titleText}>Tên buổi tập:</Text>
+            <Text style={styles.titleText}>Thời gian bắt đầu:</Text>
           </View>
           <View style={styles.textInputView}>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeName}
-              value={name}
+              onChangeText={text => onChange('practiceDate', text)}
+              value={data.practiceDate}
             />
           </View>
         </View>
         {/* Container */}
         <View style={styles.container}>
           <View style={styles.titleView}>
-            <Text style={styles.titleText}>Thời gian:</Text>
+            <Text style={styles.titleText}>Thời gian kết thúc:</Text>
           </View>
           <View style={styles.textInputView}>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeTime}
-              value={time}
+              onChangeText={text => onChange('endTime', text)}
+              value={data.endTime}
             />
           </View>
         </View>
@@ -95,5 +124,11 @@ const styles = StyleSheet.create({
     color: 'black',
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
+  },
+  indicatorView: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '50%',
+    height: '50%',
+    margin: 'auto',
   },
 });
