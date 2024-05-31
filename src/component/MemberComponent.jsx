@@ -17,7 +17,7 @@ export default function MemberComponent(props) {
       onPress={moveToMemberDetail}
       style={styles.containerView}>
       <View style={styles.textView}>
-        <Text style={styles.text}>{props.item.name}</Text>
+        <Text style={styles.text}>{props.item.memberName}</Text>
       </View>
     </TouchableOpacity>
   );

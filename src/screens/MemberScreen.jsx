@@ -9,98 +9,52 @@ import {
 } from 'react-native';
 import ColorConst from '../const/ColorConst';
 import 'react-native-vector-icons';
-import {Button} from 'react-native-paper';
+import {ActivityIndicator, Button, MD2Colors} from 'react-native-paper';
 import MemberComponent from '../component/MemberComponent';
+import axios from 'axios';
+import RequestConst from '../const/RequestConst';
+import {useFocusEffect} from '@react-navigation/native';
 
 const MemberScreen = ({navigation}) => {
-  const mockItem = {
-    name: 'Nguyen Van A',
-    position: ['SS', 'PA'],
-  };
-  const mockData = [
-    {
-      id: '1',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '2',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '3',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '4',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '5',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '6',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '7',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '8',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-
-    {
-      id: '9',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '10',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '711',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-    {
-      id: '812',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-
-    {
-      id: '913',
-      name: 'Nguyen Van A',
-      position: ['SS', 'PA'],
-    },
-  ];
+  const [data, setData] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [clickedRow, setClickedRow] = useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      axios
+        .get(`${RequestConst.baseURL}/api/v1/member/getAllMember`)
+        .then(response => {
+          setTimeout(() => {
+            setData(response.data);
+            setIsLoading(false);
+          }, 1000);
+        })
+        .catch(err => {
+          console.error(err);
+          setIsLoading(false);
+        });
+    }, []),
+  );
+
   return (
     <SafeAreaView>
-      {/* <MemberComponent
-        item={mockItem}
-        isVisible={isVisible}
-        setIsVisible={setIsVisible}
-        isDeleteModalVisible={isDeleteModalVisible}
-        setIsDeleteModalVisible={setIsDeleteModalVisible}
-      /> */}
+      <Modal transparent={true} visible={isLoading}>
+        <View style={styles.indicatorView}>
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            size={'large'}
+          />
+        </View>
+      </Modal>
+
       <FlatList
-        data={mockData}
+        data={data}
         renderItem={({item}) => {
           return (
             <MemberComponent
@@ -116,7 +70,7 @@ const MemberScreen = ({navigation}) => {
           );
         }}
         extraData={clickedRow}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, idx) => `${item.memberID}_${idx}`}
       />
       <Modal visible={isDeleteModalVisible} transparent={true}>
         <View style={styles.checkDeleteView}>
@@ -151,8 +105,6 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    // borderWidth: 1,
-    // borderColor: 'grey',
   },
   checkDeleteView: {
     margin: 'auto',
@@ -180,6 +132,12 @@ const styles = StyleSheet.create({
     backgroundColor: ColorConst.spaceGray,
     width: '100%',
     marginBottom: 3,
+  },
+  indicatorView: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '50%',
+    height: '50%',
+    margin: 'auto',
   },
 });
 export default MemberScreen;
