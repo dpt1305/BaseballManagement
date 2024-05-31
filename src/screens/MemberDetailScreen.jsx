@@ -12,8 +12,9 @@ import {Button} from 'react-native-paper';
 import 'react-native-vector-icons';
 import ColorConst from '../const/ColorConst';
 import PositionModal from '../component/PositionModal';
+import PositionsConst from '../const/PositionsConst';
 
-export function MemeberDetailScreen() {
+export function MemeberDetailScreen(props) {
   const mockData = {
     memberID: 1,
     memberName: 'Tung',
@@ -29,21 +30,21 @@ export function MemeberDetailScreen() {
       {positionID: 4, positionName: '1B'},
     ],
   };
+
   const [positionNames, setPositionNames] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [user, setUser] = useState(mockData);
 
-  const positionIds = mockData.memberPositionSet.map(e => e.positionID);
-  const [selectedPositionIds, setSelectedPositionIds] = useState(positionIds);
+  const [selectedPositionIds, setSelectedPositionIds] = useState([]);
 
-  useEffect(
-    () =>
-      setPositionNames(
-        mockData.memberPositionSet.map(e => e.positionName).join(', '),
-      ),
-    [],
-  );
+  useEffect(() => {
+    setUser(props.route.params);
+    setPositionNames(
+      user.memberPositionSet.map(e => PositionsConst[e.positionID]).join(', '),
+    );
+    setSelectedPositionIds(user.memberPositionSet.map(e => e.positionID));
+  }, []);
 
   const onChangeEditable = () => {
     setIsEditable(!isEditable);
@@ -225,7 +226,7 @@ export function MemeberDetailScreen() {
                   : styles.inputText
               }
               placeholder="Cỡ áo"
-              selection={{start: user.jerseySize.toString().length}}
+              // selection={{start: user.jerseySize.toString().length}}
               editable={isEditable}
               value={user.jerseySize}
               onChangeText={newText => handleInputChange('jerseySize', newText)}

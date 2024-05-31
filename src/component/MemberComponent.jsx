@@ -8,7 +8,7 @@ export default function MemberComponent(props) {
     props.setIsDeleteModalVisible(true);
   };
   const moveToMemberDetail = () => {
-    props.navigation.navigate(ScreenConst.MEMBER_DETAIL_SCREEN);
+    props.navigation.navigate(ScreenConst.MEMBER_DETAIL_SCREEN, props.item);
   };
 
   return (
