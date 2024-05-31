@@ -13,38 +13,32 @@ import 'react-native-vector-icons';
 import ColorConst from '../const/ColorConst';
 import PositionModal from '../component/PositionModal';
 import PositionsConst from '../const/PositionsConst';
+import {useFocusEffect} from '@react-navigation/native';
 
 export function MemeberDetailScreen(props) {
   const mockData = {
     memberID: 1,
-    memberName: 'Tung',
-    phoneNumber: '0912378912',
-    dateOfBirth: '13/05/1999',
-    jerseyNumber: 13,
-    jerseySize: 'L',
-    nickName: 'tungjj',
-    handedness: 'RF',
-    memberStatus: 'Active',
-    memberPositionSet: [
-      {positionID: 2, positionName: 'P'},
-      {positionID: 4, positionName: '1B'},
-    ],
+    memberName: '',
+    phoneNumber: '',
+    dateOfBirth: '',
+    jerseyNumber: 0,
+    jerseySize: '',
+    nickName: '',
+    handedness: '',
+    memberStatus: '',
+    memberPositionSet: [{positionID: 0, positionName: ''}],
   };
 
-  const [positionNames, setPositionNames] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-  const [user, setUser] = useState(mockData);
+  const [user, setUser] = useState(props.route.params);
 
-  const [selectedPositionIds, setSelectedPositionIds] = useState([]);
-
-  useEffect(() => {
-    setUser(props.route.params);
-    setPositionNames(
-      user.memberPositionSet.map(e => PositionsConst[e.positionID]).join(', '),
-    );
-    setSelectedPositionIds(user.memberPositionSet.map(e => e.positionID));
-  }, []);
+  const [positionNames, setPositionNames] = useState(
+    user.memberPositionSet.map(e => PositionsConst[e.positionID]).join(', '),
+  );
+  const [selectedPositionIds, setSelectedPositionIds] = useState(
+    user.memberPositionSet.map(e => e.positionID),
+  );
 
   const onChangeEditable = () => {
     setIsEditable(!isEditable);
@@ -105,7 +99,7 @@ export function MemeberDetailScreen(props) {
                   : styles.inputText
               }
               placeholder="Họ và tên"
-              selection={{start: user.memberName.toString().length}}
+              selection={{start: user?.memberName.length || 0}}
               editable={isEditable}
               value={user.memberName}
               attributeName={'memberName'}
@@ -129,7 +123,7 @@ export function MemeberDetailScreen(props) {
                   : styles.inputText
               }
               placeholder="Biệt danh"
-              selection={{start: user.nickName.toString().length}}
+              selection={{start: user?.nickName.toString().length || 0}}
               editable={isEditable}
               value={user.nickName}
               onChangeText={newText => handleInputChange('nickName', newText)}
@@ -154,7 +148,7 @@ export function MemeberDetailScreen(props) {
                   : styles.inputText
               }
               placeholder="Số điện thoại"
-              selection={{start: user.phoneNumber.toString().length}}
+              selection={{start: user?.phoneNumber.toString().length || 0}}
               editable={isEditable}
               value={user.phoneNumber}
               onChangeText={newText =>
@@ -178,7 +172,7 @@ export function MemeberDetailScreen(props) {
                   : styles.inputText
               }
               placeholder="Ngày sinh"
-              selection={{start: user.dateOfBirth.toString().length}}
+              selection={{start: user?.dateOfBirth.toString().length || 0}}
               editable={isEditable}
               value={user.dateOfBirth}
               onChangeText={newText =>
@@ -202,7 +196,7 @@ export function MemeberDetailScreen(props) {
                   : styles.inputText
               }
               placeholder="Số áo"
-              selection={{start: user.jerseyNumber.toString().length}}
+              selection={{start: user?.jerseyNumber.toString().length || 0}}
               editable={isEditable}
               value={user.jerseyNumber.toString()}
               onChangeText={newText =>
@@ -248,7 +242,7 @@ export function MemeberDetailScreen(props) {
                   : styles.inputText
               }
               placeholder="Trạng thái"
-              selection={{start: user.memberStatus.toString().length}}
+              selection={{start: user?.memberStatus.toString().length || 0}}
               editable={isEditable}
               value={user.memberStatus}
               onChangeText={newText =>
