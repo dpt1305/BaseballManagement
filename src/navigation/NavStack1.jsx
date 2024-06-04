@@ -1,9 +1,4 @@
-import {
-  DrawerActions,
-  NavigationContainer,
-  useNavigation,
-} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import PracticingScreen from '../screens/PracticingScreen';
 import React from 'react';
@@ -12,8 +7,6 @@ import {Button} from 'react-native-paper';
 import 'react-native-vector-icons';
 import AddPracticingScreen from '../screens/AddPracticingScreen';
 import ScreenConst from '../const/ScreenConst';
-import MemberScreen from '../screens/MemberScreen';
-// import 'react-native-gesture-handler';
 
 export default function NavStack1() {
   const Stack = createNativeStackNavigator();
@@ -57,19 +50,13 @@ export default function NavStack1() {
       <Stack.Screen
         name={ScreenConst.ATTENDANCE_SCREEN}
         component={AttendanceScreen}
-        options={{
-          headerRight: () => {
-            return (
-              <Button
-                icon="content-save-outline"
-                onPress={() => {}}
-                // icon={require('../assets/icons8-save-50.png')}
-              >
-                Save
-              </Button>
-            );
-          },
-        }}
+        // options={{
+        //   headerRight: () => {
+        //     return (
+
+        //     );
+        //   },
+        // }}
       />
     </Stack.Navigator>
     // </NavigationContainer>
