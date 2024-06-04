@@ -40,6 +40,7 @@ export default function PracticingScreen({navigation}) {
         practiceName={name}
         practiceTime={date}
         numberPracticer={practicerNumber}
+        practiceID={item.practiceID}
       />
     );
   };

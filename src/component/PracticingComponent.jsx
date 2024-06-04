@@ -14,9 +14,10 @@ export default function PracticingComponent({
   practiceName,
   practiceTime,
   numberPracticer,
+  practiceID,
 }) {
   const componentOnPress = () => {
-    navigation.navigate(ScreenConst.ATTENDANCE_SCREEN);
+    navigation.navigate(ScreenConst.ATTENDANCE_SCREEN, practiceID);
   };
 
   return (
