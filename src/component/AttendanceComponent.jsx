@@ -3,11 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import 'react-native-vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ColorConst from '../const/ColorConst';
-
-const mockData = {
-  name: 'Nguyen Van A',
-  isChecked: false,
-};
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function AttendanceComponent({
   navigation,
@@ -15,8 +11,13 @@ export default function AttendanceComponent({
   checkedIdArray,
   setCheckedIdArray,
 }) {
-  const [isCheckedState, setIsCheckState] = useState(
-    checkedIdArray.includes(item.id),
+  const [isCheckedState, setIsCheckState] = useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsCheckState(checkedIdArray.includes(item.memberID));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [checkedIdArray]),
   );
 
   const renderCheckbox = () => {
@@ -28,17 +29,20 @@ export default function AttendanceComponent({
   };
   const onClick = () => {
     if (isCheckedState) {
-      const updateCheckedIdArray = checkedIdArray.filter(e => e !== item.id);
+      const updateCheckedIdArray = checkedIdArray.filter(
+        e => e !== item.memberID,
+      );
       setCheckedIdArray(updateCheckedIdArray);
     } else {
-      checkedIdArray.push(item.id);
+      checkedIdArray.push(item.memberID);
     }
     setIsCheckState(!isCheckedState);
-    console.log(checkedIdArray);
   };
 
   return (
-    <TouchableOpacity onPress={onClick}>
+    <TouchableOpacity
+      onPress={onClick}
+      disabled={item.memberName === '(Thành viên đã bị xóa)' ? true : false}>
       <View
         style={
           isCheckedState === true
@@ -48,7 +52,7 @@ export default function AttendanceComponent({
         <View style={styles.checkBoxView}>{renderCheckbox()}</View>
 
         <View style={styles.textView}>
-          <Text style={styles.text}>{item.name}</Text>
+          <Text style={styles.text}>{item.memberName}</Text>
         </View>
       </View>
     </TouchableOpacity>
