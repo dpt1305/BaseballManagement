@@ -6,6 +6,7 @@ import ScreenConst from '../const/ScreenConst';
 export default function MemberComponent(props) {
   const showDeletePopup = () => {
     props.setIsDeleteModalVisible(true);
+    props.setDeletedUserId(props.item.memberID);
   };
   const moveToMemberDetail = () => {
     props.navigation.navigate(ScreenConst.MEMBER_DETAIL_SCREEN, props.item);

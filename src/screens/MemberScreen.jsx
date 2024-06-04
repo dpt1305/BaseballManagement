@@ -21,7 +21,28 @@ const MemberScreen = ({navigation}) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const [clickedRow, setClickedRow] = useState(null);
+  const [deletedUserId, setDeletedUserId] = useState(null);
+
+  const onDeleteMemberPromise = () => {
+    setIsLoading(true);
+    setIsDeleteModalVisible(false);
+    axios
+      .delete(
+        `${RequestConst.baseURL}/api/v1/member/deleteMember?memberID=${deletedUserId}`,
+      )
+      .then(response =>
+        axios.get(`${RequestConst.baseURL}/api/v1/member/getAllMember`),
+      )
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.log('fail');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -52,26 +73,30 @@ const MemberScreen = ({navigation}) => {
           />
         </View>
       </Modal>
+      {data.length == 0 ? (
+        <Text>{'Không có thành viên nào'}</Text>
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={({item}) => {
+            return (
+              <MemberComponent
+                navigation={navigation}
+                item={item}
+                isVisible={isVisible}
+                setIsVisible={setIsVisible}
+                isDeleteModalVisible={isDeleteModalVisible}
+                setIsDeleteModalVisible={setIsDeleteModalVisible}
+                deletedUserId={deletedUserId}
+                setDeletedUserId={setDeletedUserId}
+              />
+            );
+          }}
+          extraData={deletedUserId}
+          keyExtractor={(item, idx) => `${item.memberID}_${idx}`}
+        />
+      )}
 
-      <FlatList
-        data={data}
-        renderItem={({item}) => {
-          return (
-            <MemberComponent
-              navigation={navigation}
-              item={item}
-              isVisible={isVisible}
-              setIsVisible={setIsVisible}
-              isDeleteModalVisible={isDeleteModalVisible}
-              setIsDeleteModalVisible={setIsDeleteModalVisible}
-              clickedRow={clickedRow}
-              setClickedRow={setClickedRow}
-            />
-          );
-        }}
-        extraData={clickedRow}
-        keyExtractor={(item, idx) => `${item.memberID}_${idx}`}
-      />
       <Modal visible={isDeleteModalVisible} transparent={true}>
         <View style={styles.checkDeleteView}>
           {/* ON top */}
@@ -90,7 +115,7 @@ const MemberScreen = ({navigation}) => {
             </View>
             {/* right */}
             <View style={{backgroundColor: ColorConst.customedRed}}>
-              <Button>Đồng ý</Button>
+              <Button onPress={onDeleteMemberPromise}>Đồng ý</Button>
             </View>
           </View>
         </View>
