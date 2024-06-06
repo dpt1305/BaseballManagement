@@ -46,18 +46,20 @@ export default function AttendanceScreen(props) {
     const practiceId = props.route.params;
     const requestAttendanceList = attendanceStateList.map(e => {
       return {
-        practiceID: practiceId,
+        memberName: e.memberName,
         memberID: e.memberID,
         isAttend: checkedIdArray.includes(e.memberID) ? 1 : 0,
       };
     });
     setIsLoading(true);
     axios
-      .put(`${RequestConst.baseURL}/api/v1/attendance/practiceAttend`, {
-        attendDTOSet: requestAttendanceList,
-      })
+      .put(
+        `${RequestConst.baseURL}/api/v1/attendance/practiceAttend?practiceID=${practiceId}`,
+        {
+          attendDTOSet: requestAttendanceList,
+        },
+      )
       .then(response => {
-        console.log('success');
         setIsLoading(false);
         props.navigation.navigate(ScreenConst.PRACTICING_SCREEN);
       })
