@@ -46,7 +46,7 @@ export default function NavStack2() {
                 onPress={() =>
                   navigation.navigate(ScreenConst.ADD_MEMBER_SCREEN)
                 }>
-                Add
+                {'Thêm'}
               </Button>
             );
           },

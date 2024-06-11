@@ -15,8 +15,8 @@ export default function DefaultNavigation() {
         screenOptions={{
           headerShown: false,
         }}>
-        <Drawer.Screen name={'🏋️‍♂️ HOME'} component={NavStack1} />
-        <Drawer.Screen name={'🥎 MEMBER SCREEN'} component={NavStack2} />
+        <Drawer.Screen name={'🏋️‍♂️ Buổi tập'} component={NavStack1} />
+        <Drawer.Screen name={'🥎 Thành viên'} component={NavStack2} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

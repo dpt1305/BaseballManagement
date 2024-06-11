@@ -1,9 +1,9 @@
 const ScreenConst = {
   PRACTICING_SCREEN: 'Buổi tập',
-  ATTENDANCE_SCREEN: 'AttendanceScreen',
-  MEMBER_SCREEN: 'MemberScreen',
-  ADD_PRACTICING_SCREEN: 'AddPracticingScreen',
-  MEMBER_DETAIL_SCREEN: 'MemberDetailScreen',
-  ADD_MEMBER_SCREEN: 'AddMemeberScreen',
+  ATTENDANCE_SCREEN: 'Điểm danh',
+  MEMBER_SCREEN: 'Thành viên',
+  ADD_PRACTICING_SCREEN: 'Thêm buổi tập',
+  MEMBER_DETAIL_SCREEN: 'Chi tiết',
+  ADD_MEMBER_SCREEN: 'Thêm thành viên',
 };
 export default ScreenConst;
