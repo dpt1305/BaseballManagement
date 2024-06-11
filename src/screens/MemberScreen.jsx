@@ -6,6 +6,7 @@ import {
   Modal,
   SafeAreaView,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import ColorConst from '../const/ColorConst';
 import 'react-native-vector-icons';
@@ -15,6 +16,15 @@ import axios from 'axios';
 import RequestConst from '../const/RequestConst';
 import {useFocusEffect} from '@react-navigation/native';
 
+const mockFilter = [
+  {number: 0, key: 'Tất cả'},
+  {number: 1, key: 'Nghỉ nhiều hơn 1 buổi'},
+  {number: 2, key: 'Nghỉ nhiều hơn 2 buổi'},
+  {number: 3, key: 'Nghỉ nhiều hơn 3 buổi'},
+  {number: 4, key: 'Nghỉ nhiều hơn 4 buổi'},
+  {number: 5, key: 'Nghỉ nhiều hơn 5 buổi'},
+];
+
 const MemberScreen = ({navigation}) => {
   const [data, setData] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -22,6 +32,8 @@ const MemberScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const [deletedUserId, setDeletedUserId] = useState(null);
+  const [filter, setFilter] = useState(mockFilter[0]);
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   const onDeleteMemberPromise = () => {
     setIsLoading(true);
@@ -44,9 +56,40 @@ const MemberScreen = ({navigation}) => {
       });
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setIsLoading(true);
+  const renderFilterItem = item => {
+    const eachItem = item.item;
+    return (
+      <TouchableOpacity
+        style={[styles.item, eachItem.key === filter && styles.selectedItem]}
+        onPress={() => {
+          setFilter(eachItem);
+          setIsFilterModalVisible(false);
+        }}>
+        <Text style={styles.itemText}>{eachItem.key}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     setIsLoading(true);
+  //     axios
+  //       .get(`${RequestConst.baseURL}/api/v1/member/getAllMember`)
+  //       .then(response => {
+  //         setTimeout(() => {
+  //           setData(response.data);
+  //           setIsLoading(false);
+  //         }, 1000);
+  //       })
+  //       .catch(err => {
+  //         console.error(err);
+  //         setIsLoading(false);
+  //       });
+  //   }, []),
+  // );
+  React.useEffect(() => {
+    setIsLoading(true);
+    if (filter.number === 0) {
       axios
         .get(`${RequestConst.baseURL}/api/v1/member/getAllMember`)
         .then(response => {
@@ -59,8 +102,27 @@ const MemberScreen = ({navigation}) => {
           console.error(err);
           setIsLoading(false);
         });
-    }, []),
-  );
+    } else {
+      console.log('filter', filter);
+      const number = filter.number;
+      console.log(number);
+      axios
+        .put(
+          `${RequestConst.baseURL}/api/v1/attendance/allMemberMissedMoreThanNumberOfSessions?numberOfSessions=${number}`,
+        )
+        .then(response => {
+          setTimeout(() => {
+            setData(response.data);
+            setIsLoading(false);
+          }, 1000);
+        })
+        .catch(err => {
+          console.error(err);
+          console.log(err);
+          setIsLoading(false);
+        });
+    }
+  }, [filter]);
 
   return (
     <SafeAreaView>
@@ -73,28 +135,72 @@ const MemberScreen = ({navigation}) => {
           />
         </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isFilterModalVisible}
+        onRequestClose={() => {
+          setIsFilterModalVisible(!isFilterModalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Select an Item</Text>
+            <FlatList
+              data={mockFilter}
+              renderItem={renderFilterItem}
+              keyExtractor={(item, idx) => `${item.key}_${idx}`}
+            />
+          </View>
+        </View>
+      </Modal>
       {data.length == 0 ? (
-        <Text>{'Không có thành viên nào'}</Text>
+        <View>
+          <Button
+            icon="filter"
+            mode="outlined"
+            style={{
+              margin: '5%',
+            }}
+            onPress={() => {
+              setIsFilterModalVisible(true);
+            }}>
+            {filter.key}
+          </Button>
+          <Text>{'Không có thành viên nào'}</Text>
+        </View>
       ) : (
-        <FlatList
-          data={data}
-          renderItem={({item}) => {
-            return (
-              <MemberComponent
-                navigation={navigation}
-                item={item}
-                isVisible={isVisible}
-                setIsVisible={setIsVisible}
-                isDeleteModalVisible={isDeleteModalVisible}
-                setIsDeleteModalVisible={setIsDeleteModalVisible}
-                deletedUserId={deletedUserId}
-                setDeletedUserId={setDeletedUserId}
-              />
-            );
-          }}
-          extraData={deletedUserId}
-          keyExtractor={(item, idx) => `${item.memberID}_${idx}`}
-        />
+        <View>
+          <Button
+            icon="filter"
+            mode="outlined"
+            style={{
+              margin: '5%',
+            }}
+            onPress={() => {
+              setIsFilterModalVisible(true);
+            }}>
+            {filter.key}
+          </Button>
+          <FlatList
+            data={data}
+            renderItem={({item}) => {
+              return (
+                <MemberComponent
+                  navigation={navigation}
+                  item={item}
+                  isVisible={isVisible}
+                  setIsVisible={setIsVisible}
+                  isDeleteModalVisible={isDeleteModalVisible}
+                  setIsDeleteModalVisible={setIsDeleteModalVisible}
+                  deletedUserId={deletedUserId}
+                  setDeletedUserId={setDeletedUserId}
+                />
+              );
+            }}
+            extraData={deletedUserId}
+            keyExtractor={(item, idx) => `${item.memberID}_${idx}`}
+          />
+        </View>
       )}
 
       <Modal visible={isDeleteModalVisible} transparent={true}>
@@ -163,6 +269,47 @@ const styles = StyleSheet.create({
     width: '50%',
     height: '50%',
     margin: 'auto',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    height: '50%',
+    margin: '10%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: '10%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  item: {
+    padding: 10,
+    marginVertical: 8,
+    width: 200,
+    borderRadius: 10,
+    backgroundColor: ColorConst.primaryColor,
+  },
+  selectedItem: {
+    backgroundColor: ColorConst.spaceGray,
+  },
+  itemText: {
+    color: '#000',
+    textAlign: 'center',
   },
 });
 export default MemberScreen;

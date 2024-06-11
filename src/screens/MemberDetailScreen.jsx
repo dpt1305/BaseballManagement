@@ -16,11 +16,13 @@ import PositionsConst from '../const/PositionsConst';
 import axios from 'axios';
 import RequestConst from '../const/RequestConst';
 import ScreenConst from '../const/ScreenConst';
+import {useFocusEffect} from '@react-navigation/native';
 
 export function MemeberDetailScreen(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [user, setUser] = useState(props.route.params);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [positionNames, setPositionNames] = useState(
