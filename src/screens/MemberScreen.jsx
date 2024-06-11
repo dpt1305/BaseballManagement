@@ -103,9 +103,7 @@ const MemberScreen = ({navigation}) => {
           setIsLoading(false);
         });
     } else {
-      console.log('filter', filter);
       const number = filter.number;
-      console.log(number);
       axios
         .put(
           `${RequestConst.baseURL}/api/v1/attendance/allMemberMissedMoreThanNumberOfSessions?numberOfSessions=${number}`,
