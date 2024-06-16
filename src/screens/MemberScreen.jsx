@@ -70,57 +70,42 @@ const MemberScreen = ({navigation}) => {
     );
   };
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     setIsLoading(true);
-  //     axios
-  //       .get(`${RequestConst.baseURL}/api/v1/member/getAllMember`)
-  //       .then(response => {
-  //         setTimeout(() => {
-  //           setData(response.data);
-  //           setIsLoading(false);
-  //         }, 1000);
-  //       })
-  //       .catch(err => {
-  //         console.error(err);
-  //         setIsLoading(false);
-  //       });
-  //   }, []),
-  // );
-  React.useEffect(() => {
-    setIsLoading(true);
-    if (filter.number === 0) {
-      axios
-        .get(`${RequestConst.baseURL}/api/v1/member/getAllMember`)
-        .then(response => {
-          setTimeout(() => {
-            setData(response.data);
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      if (filter.number === 0) {
+        axios
+          .get(`${RequestConst.baseURL}/api/v1/member/getAllMember`)
+          .then(response => {
+            setTimeout(() => {
+              setData(response.data);
+              setIsLoading(false);
+            }, 1000);
+          })
+          .catch(err => {
+            console.error(err);
             setIsLoading(false);
-          }, 1000);
-        })
-        .catch(err => {
-          console.error(err);
-          setIsLoading(false);
-        });
-    } else {
-      const number = filter.number;
-      axios
-        .put(
-          `${RequestConst.baseURL}/api/v1/attendance/allMemberMissedMoreThanNumberOfSessions?numberOfSessions=${number}`,
-        )
-        .then(response => {
-          setTimeout(() => {
-            setData(response.data);
+          });
+      } else {
+        const number = filter.number;
+        axios
+          .put(
+            `${RequestConst.baseURL}/api/v1/attendance/allMemberMissedMoreThanNumberOfSessions?numberOfSessions=${number}`,
+          )
+          .then(response => {
+            setTimeout(() => {
+              setData(response.data);
+              setIsLoading(false);
+            }, 1000);
+          })
+          .catch(err => {
+            console.error(err);
+            console.log(err);
             setIsLoading(false);
-          }, 1000);
-        })
-        .catch(err => {
-          console.error(err);
-          console.log(err);
-          setIsLoading(false);
-        });
-    }
-  }, [filter]);
+          });
+      }
+    }, [filter]),
+  );
 
   return (
     <SafeAreaView>
