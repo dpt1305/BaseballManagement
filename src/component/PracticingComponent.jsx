@@ -15,13 +15,20 @@ export default function PracticingComponent({
   practiceTime,
   numberPracticer,
   practiceID,
+  setIsDeleteModalVisible,
+  practiceId,
+  setPracticeId,
 }) {
   const componentOnPress = () => {
     navigation.navigate(ScreenConst.ATTENDANCE_SCREEN, practiceID);
   };
+  const onLongPress = () => {
+    setIsDeleteModalVisible(true);
+    setPracticeId(practiceID);
+  };
 
   return (
-    <TouchableOpacity onPress={componentOnPress}>
+    <TouchableOpacity onPress={componentOnPress} onLongPress={onLongPress}>
       <View style={styles.containerView}>
         <View style={styles.onTopView}>
           <Text style={styles.topTitle}>{practiceName}</Text>
